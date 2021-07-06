@@ -45,17 +45,17 @@ await temi.goto(location='Front Door', timeout=3).run()
 Currently, the following APIs are implemented:
 ```Python
 # Speak a sentence.
-await temi.speak(sentence="Sentence to say", timeout=None)
+await temi.speak(sentence="Sentence to say", timeout=None).run()
 
 # Ask a question, then return the reply.
-reply = await temi.ask(sentence="Question to ask", timeout=None)
+reply = await temi.ask(sentence="Question to ask", timeout=None).run()
 
 # Go to a location
-await temi.goto(location="Location name", timeout=None)
+await temi.goto(location="Location name", timeout=None).run()
 
 # Turn by an angle
-await temi.turn(angle=angle, timeout=None)
+await temi.turn(angle=angle, timeout=None).run()
 
 # Tilt screen to an angle (-25 ~ 55)
-await temi.turn(angle=angle, timeout=None)
+await temi.turn(angle=angle, timeout=None).run()
 ```
