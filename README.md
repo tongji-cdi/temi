@@ -38,6 +38,7 @@ await temi.ask(sentence="Hello! What's your name?").run()
 All commands support a `timeout` parameter. If it is specified, the `await` will terminate after the timeout, regardless of execution state.
 ```python
 # The call will return after three seconds, regardless of Temi's location.
+# Temi may continue walking to the door, but you can command it to stop in the following code.
 await temi.goto(location='Front Door', timeout=3).run()
 ```
 
