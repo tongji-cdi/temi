@@ -123,26 +123,11 @@ class Temi:
             return results[0]
         return results
 
-    def speak(self, sentence, timeout=None):
-        self.tasks += [self.command('speak', sentence=sentence, timeout=timeout)]
-        return self
-
-    def ask(self, sentence, timeout=None):
-        self.tasks += [self.command('ask', sentence=sentence, timeout=timeout)]
-        return self
-
-    def goto(self, location, timeout=None):
-        self.tasks += [self.command('goto', location=location, timeout=timeout)]
-        return self
-
-    # -25 ~ 55
-    def tilt(self, angle, timeout=None):
-        self.tasks += [self.command('tilt', angle=angle, timeout=timeout)]
-        return self
-
-    def turn(self, angle, timeout=None):
-        self.tasks += [self.command('turn', angle=angle, timeout=timeout)]
-        return self
+    def __getattr__(self, name):
+        def command_template(*args, **kwargs):
+            self.tasks += [self.command(name, **kwargs)]
+            return self
+        return command_template
 
 if __name__ == '__main__':
     class Test:
@@ -152,21 +137,9 @@ if __name__ == '__main__':
             print(event, data)
 
     async def connect_temi():
-        temi = Temi('ws://10.0.1.157:8175')
-        temi.connect()
-
-        test = Test('test')
-        temi.register('some_event', test.test, oneshot=True)
-
-        message = await temi.speak("抬头").tilt(50).run()
-        print(message)        
-        message = await temi.speak("低头").tilt(10).run()
+        temi = Temi('ws://192.168.1.105:8175')
+        await temi.connect()
+        message = await temi.interface(url="https://www.baidu.com/").speak(sentence="百度一下，你就知道。").run()
         print(message)
-
-        # message = await temi.goto("葛亚特的座位").speak("你好，请等我一下，我来找你").tilt(55).run()
-        # print(message)
-        # message = await temi.speak("请跟着我，我带你去座位吧").goto("葛亚特的座位").run()
-        # print(message)
-        
 
     asyncio.get_event_loop().run_until_complete(connect_temi())
